@@ -1,0 +1,24 @@
+{
+    "manifest_version": 2,
+    "name": "TabStash",
+    "version": "0.0.1",
+
+    "description": "Short-term and grouped tab managment for Firefox",
+    "homepage_url": "https://github.com/natecraddock/tabstash",
+    "icons": {
+        "48": "icons/tabstash-48.png",
+        "96": "icons/tabstash-96.png"
+    },
+
+    "permissions": [
+        "<all_urls>",
+        "tabs"
+    ],
+
+    "browser_action": {
+        "browser_style": true,
+        "default_icon": "icons/tabstash-48.png",
+        "default_title": "TabStash",
+        "default_popup": "tabstash.html"
+    }
+}
