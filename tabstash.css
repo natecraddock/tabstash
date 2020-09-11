@@ -1,9 +1,74 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    /* margin: 0; */
+    /* padding: 0; */
+    /* box-sizing: border-box; */
 }
 
 body {
     padding: 1rem;
+    width: 400px;
+}
+
+#header {
+    margin: 0;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+#header h2, button {
+    margin: 0;
+    vertical-align: middle;
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+}
+
+.button-main {
+    height: 40px;
+    display: inline-block;
+    text-align: center;
+}
+
+#stash-box {
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+select {
+    width: 100%;
+}
+
+#stash {
+    border: rgb(192, 192, 192) 1px solid;
+}
+
+#tabs-list {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#stash ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+
+    height: 200px;
+}
+
+#stash a {
+    padding-left: 1rem;
+}
+
+#stash li:hover {
+    background-color: rgb(219, 219, 219);
+}
+
+.favicon {
+    width: 16px;
 }

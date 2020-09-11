@@ -12,7 +12,8 @@
 
     "permissions": [
         "<all_urls>",
-        "tabs"
+        "tabs",
+        "menus"
     ],
 
     "browser_action": {

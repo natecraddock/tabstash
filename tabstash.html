@@ -6,9 +6,31 @@
     </head>
 
     <body>
-        <div class='panel'>
-            <h1>TabStash</h1>
-            <hr>
+        <div id="header" class="button-row">
+            <h2>TabStash</h2>
+            <div>
+                <button class="browser-style button-main">Unstash</button>
+                <button class="browser-style button-main">New Stash</button>
+            </div>
         </div>
+
+        <div id="stash-box">
+            <select class="browser-style" name="stashes" id="stashes">
+                <option>All Tabs</option>
+            </select>
+            <div id='stash'>
+                <div id="tabs-list">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button class="browser-style">Add to Stash</button>
+            <button class="browser-style">Delete</button>
+            <button class="browser-style">...</button>
+        </div>
+
+        <script src="tabstash.js"></script>
     </body>
 </html>
