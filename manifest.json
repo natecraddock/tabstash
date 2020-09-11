@@ -14,7 +14,8 @@
         "<all_urls>",
         "tabs",
         "menus",
-        "storage"
+        "storage",
+        "tabHide"
     ],
 
     "browser_action": {

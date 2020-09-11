@@ -9,7 +9,12 @@ function getCurrentWindowTabs() {
 }
 
 function buttonStash() {
-    console.log("Clicked Stash");
+    browser.tabs.query({currentWindow: true, highlighted: true}).then((tabs) => {
+        console.log(tabs);
+        for (let tab of tabs) {
+            browser.tabs.remove(tab.id);
+        }
+    });
 }
 
 function buttonUnstash() {
