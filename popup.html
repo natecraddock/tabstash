@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="popup.css">
+    </head>
+
+    <body>
+        <div id="header" class="button-row">
+            <h2>TabStash</h2>
+            <div>
+                <button id="but-unstash" class="browser-style button-main">Unstash</button>
+                <button id="but-stash" class="browser-style button-main">New Stash</button>
+            </div>
+        </div>
+
+        <div id="stash-box">
+            <select class="browser-style" name="stashes" id="stash-list">
+            </select>
+            <div id='stash'>
+                <div id="tabs-list">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button id="but-stash-add" class="browser-style">Add to Stash</button>
+            <button id="but-stash-delete" class="browser-style">Delete</button>
+            <button id="but-stash-more" class="browser-style">...</button>
+        </div>
+
+        <script type="module" src="popup.js"></script>
+    </body>
+</html>

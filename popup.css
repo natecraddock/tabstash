@@ -1,9 +1,3 @@
-* {
-    /* margin: 0; */
-    /* padding: 0; */
-    /* box-sizing: border-box; */
-}
-
 body {
     padding: 1rem;
     width: 400px;
@@ -61,14 +55,12 @@ select {
     height: 200px;
 }
 
-#stash a {
-    padding-left: 1rem;
+#stash li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 #stash li:hover {
     background-color: rgb(219, 219, 219);
-}
-
-.favicon {
-    width: 16px;
 }

@@ -13,13 +13,14 @@
     "permissions": [
         "<all_urls>",
         "tabs",
-        "menus"
+        "menus",
+        "storage"
     ],
 
     "browser_action": {
         "browser_style": true,
         "default_icon": "icons/tabstash-48.png",
         "default_title": "TabStash",
-        "default_popup": "tabstash.html"
+        "default_popup": "popup.html"
     }
 }
