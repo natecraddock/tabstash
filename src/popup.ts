@@ -1,4 +1,6 @@
+import { browser } from "webextension-polyfill-ts";
 import { Tab, TabStash } from "./tabstash.js";
+import { storeTabs } from "./stash.js";
 
 let popup = null;
 
@@ -9,8 +11,10 @@ function getCurrentWindowTabs() {
 }
 
 function buttonStash() {
+    /* For now let's just remove tabs, perhaps later we can pick a new active
+     * and hide/discard tabs. */
     browser.tabs.query({currentWindow: true, highlighted: true}).then((tabs) => {
-        console.log(tabs);
+        storeTabs(tabs);
         for (let tab of tabs) {
             browser.tabs.remove(tab.id);
         }
@@ -33,7 +37,7 @@ function buttonMore() {
     console.log("Clicked More");
 }
 
-function setupButtonListeners(popup) {
+function setupButtonListeners(popup: any) {
     popup.buttons.stash.addEventListener("click", buttonStash);
     popup.buttons.unstash.addEventListener("click", buttonUnstash);
     popup.buttons.add.addEventListener("click", buttonAddToStash);
@@ -72,7 +76,7 @@ function listTabs() {
             let fav = document.createElement("img");
             tabLi.appendChild(fav);
             tabLi.appendChild(tabLink);
-            tabLink.textContent = tab.title || tab.id;
+            tabLink.textContent = tab.title;
 
             tabLink.setAttribute('href', tab.url);
             tabLink.classList.add('switch-tabs');

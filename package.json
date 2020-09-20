@@ -1,0 +1,30 @@
+{
+  "name": "tabstash",
+  "version": "0.0.1",
+  "description": "Like `git stash` but for tabs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/natecraddock/tabstash.git"
+  },
+  "keywords": [
+    "Firefox",
+    "Extension",
+    "Tabs",
+    "Stash",
+    "Tab stash"
+  ],
+  "author": "Nathan Craddock",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/natecraddock/tabstash/issues"
+  },
+  "homepage": "https://github.com/natecraddock/tabstash#readme",
+  "devDependencies": {
+    "typescript": "^4.0.3",
+    "web-ext": "^5.0.0",
+    "webextension-polyfill-ts": "^0.20.0"
+  }
+}

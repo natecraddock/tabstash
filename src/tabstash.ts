@@ -1,8 +1,10 @@
+import { browser } from "webextension-polyfill-ts";
+
 export class TabStash {
     name = "";
-    tabs = [];
+    tabs: any = [];
 
-    addTab(tab) {
+    addTab(tab: any) {
         this.tabs.push(tab);
     }
 }
