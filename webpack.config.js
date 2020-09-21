@@ -1,7 +1,8 @@
 const path = require("path");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    // entry: "./src/popup.ts",
     entry: {
         popup: "./src/popup.ts",
         stash: "./src/stash.ts",
@@ -20,9 +21,23 @@ module.exports = {
         extensions: ['.tsx', '.ts', '.js'],
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'build'),
     },
     optimization: {
         minimize: false
-    }
+    },
+    plugins: [
+        new CleanWebpackPlugin(),
+        new CopyPlugin({
+           patterns: [
+               {
+                   context: path.resolve(__dirname, "src"),
+                   from: "**/*",
+                   globOptions: {
+                       ignore: ["**/*.ts"]
+                   }
+               }
+           ]
+        })
+    ]
 };
