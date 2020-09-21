@@ -1,13 +1,15 @@
+exports = {};
+
 import { browser } from "webextension-polyfill-ts";
 import { Tab, TabStash } from "./tabstash.js";
-import { storeTabs } from "./stash.js";
+import { storeTabs } from "./stash";
 
 let popup = null;
 
 document.addEventListener("DOMContentLoaded", setup);
 
 function getCurrentWindowTabs() {
-    return browser.tabs.query({currentWindow: true, highlighted: true});
+    return browser.tabs.query({currentWindow: true});
 }
 
 function buttonStash() {
