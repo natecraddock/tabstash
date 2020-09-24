@@ -4,43 +4,47 @@
 
 import { browser } from "webextension-polyfill-ts";
 
-let stashName = "tabstashstorage";
+export class TabStash {
+    tabs: string[];
+    name: string;
 
-class StashStorage {
-    version = "";
-    stashes: any = [];
+    constructor(name: string, tabs: string[]) {
+        this.tabs = tabs;
+        this.name = name;
+    }
 }
 
-class TabStash {
-    
+export class StashStorage {
+    version: string;
+    stashes: TabStash[];
+
+    constructor() {
+        this.version = "0.0.1";
+        this.stashes = [];
+    }
 }
 
-function initStorage() {
-    browser.storage.local.set({tabstashstorage: new StashStorage()});
-}
+let storage: StashStorage = undefined;
 
-function getStorage(): StashStorage {
-    browser.storage.local.get(stashName).then((item) => {
-        // Check if the object exists
-        if ((Object.keys(item).length === 0) && item.constructor === Object) {
-            initStorage();
-        }
-        console.log(item.tabstashstorage);
-        return item.tabstashstorage;
-    },
-    (error) => {
-        console.log("No storage", error);
+export async function getStorage() {
+    if (storage === undefined) {
+        storage = new StashStorage();
+        await browser.storage.local.set({ stashes: storage });
+    }
+    browser.storage.local.get("stashes").then(data => {
+        storage = data.stashes;
     });
 
-    return new StashStorage();
+    return storage;
 }
 
-function setStorage(storage: any) {
-    browser.storage.local.set({tabstashstorage: storage});
+async function setStorage(storage: StashStorage) {
+    await browser.storage.local.set({stashes: storage});
 }
 
-export function storeTabs(tabs: any) {
-    let storage = getStorage();
-    storage.stashes.push(tabs);
-    setStorage(storage);
+export function storeTabs(tabs: TabStash) {
+    getStorage().then(data => {
+        storage.stashes.push(tabs);
+        setStorage(storage);
+    });
 }

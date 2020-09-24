@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "name": "TabStash",
+    "description": "Like `git stash` but for tabs",
     "version": "0.0.1",
 
-    "description": "Short-term and grouped tab managment for Firefox",
     "homepage_url": "https://github.com/natecraddock/tabstash",
     "icons": {
         "48": "icons/tabstash-48.png",
@@ -23,5 +23,11 @@
         "default_icon": "icons/tabstash-48.png",
         "default_title": "TabStash",
         "default_popup": "popup.html"
+    },
+
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "tabstash@nathancraddock.com"
+        }
     }
 }
