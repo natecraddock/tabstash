@@ -29,5 +29,10 @@
         "gecko": {
             "id": "tabstash@nathancraddock.com"
         }
+    },
+
+    "options_ui": {
+        "page": "options.html",
+        "browser_style": true
     }
 }
