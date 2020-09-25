@@ -1,6 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-// import { Tab, TabStash } from "./tabstash.js";
-import { storeTabs, TabStash, getStorage, StashStorage } from "./stash";
+import { initialize, storeTabs, TabStash, StashStorage, getStorage, clearStash } from "./storage";
 
 type Popup = {
     buttons: {
@@ -13,10 +12,6 @@ type Popup = {
     stashList: HTMLElement,
 };
 let popup: Popup = null;
-
-function getCurrentWindowTabs() {
-    return browser.tabs.query({currentWindow: true});
-}
 
 function buttonStash() {
     /* For now let's just remove tabs, perhaps later we can pick a new active
@@ -60,13 +55,21 @@ function listTabs(tabs: TabStash) {
 }
 
 function refreshPopup(storage: StashStorage) {
-    for (let stash of storage.stashes) {
-        listTabs(stash);
-    }
+    listTabs(storage.stashes[0]);
 }
 
 function buttonUnstash() {
     console.log("Clicked Unstash");
+    let storage = getStorage();
+
+    for (let tab of storage.stashes[0].tabs) {
+        browser.tabs.create({
+            discarded: true,
+            url: tab
+        });
+    }
+
+    clearStash();
 }
 
 function buttonAddToStash() {
@@ -109,9 +112,10 @@ function setup() {
     setupButtonListeners(popup);
     browser.storage.onChanged.addListener(setupStorageListener);
 
-    getStorage().then(storage => {
-        refreshPopup(storage);
-    });
+    let storage = getStorage()
+    refreshPopup(storage);
 }
 
-document.addEventListener("DOMContentLoaded", setup);
+document.addEventListener("DOMContentLoaded", function() {
+    initialize(setup);
+});

@@ -5,8 +5,6 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
     entry: {
         popup: "./src/popup.ts",
-        stash: "./src/stash.ts",
-        tabstash: "./src/tabstash.ts"
     },
     module: {
         rules: [
