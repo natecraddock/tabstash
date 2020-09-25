@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import { initialize, storeTabs, TabStash, StashStorage, getStorage, clearStash } from "./storage";
+import * as storage from "./storage";
 
 type Popup = {
     buttons: {
@@ -18,19 +18,19 @@ function buttonStash() {
      * and hide/discard tabs. */
      browser.tabs.query({currentWindow: true, highlighted: true}).then((tabs) => {
          let urls = tabs.map(tab => {
-             return tab.url;
+             return new storage.Tab(tab.title, tab.url);
          });
 
          for (let tab of tabs) {
             browser.tabs.remove(tab.id);
          }
 
-         let stash = new TabStash("stash", urls);
-         storeTabs(stash);
+         let stash = new storage.TabStash("stash", urls);
+         storage.storeTabs(stash);
     });
 }
 
-function listTabs(tabs: TabStash) {
+function listTabs(tabs: storage.TabStash) {
     let tabsList = document.getElementById('tabs-list');
     let currentTabs = document.createDocumentFragment();
 
@@ -42,9 +42,9 @@ function listTabs(tabs: TabStash) {
         let fav = document.createElement("img");
         tabLi.appendChild(fav);
         tabLi.appendChild(tabLink);
-        tabLink.textContent = tab;
+        tabLink.textContent = tab.name;
 
-        tabLink.setAttribute('href', tab);
+        tabLink.setAttribute('href', tab.url);
         tabLink.classList.add('switch-tabs');
         currentTabs.appendChild(tabLi);
     }
@@ -54,22 +54,22 @@ function listTabs(tabs: TabStash) {
     tabsList.appendChild(ul);
 }
 
-function refreshPopup(storage: StashStorage) {
+function refreshPopup(storage: storage.StashStorage) {
     listTabs(storage.stashes[0]);
 }
 
 function buttonUnstash() {
     console.log("Clicked Unstash");
-    let storage = getStorage();
+    let tabstash = storage.getStorage();
 
-    for (let tab of storage.stashes[0].tabs) {
+    for (let tab of tabstash.stashes[0].tabs) {
         browser.tabs.create({
             discarded: true,
-            url: tab
+            url: tab.url
         });
     }
 
-    clearStash();
+    storage.clearStash();
 }
 
 function buttonAddToStash() {
@@ -112,10 +112,10 @@ function setup() {
     setupButtonListeners(popup);
     browser.storage.onChanged.addListener(setupStorageListener);
 
-    let storage = getStorage()
-    refreshPopup(storage);
+    let tabstash = storage.getStorage()
+    refreshPopup(tabstash);
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-    initialize(setup);
+    storage.initialize(setup);
 });

@@ -1,10 +1,20 @@
 import { browser } from "webextension-polyfill-ts";
 
+export class Tab {
+    name: string;
+    url: string;
+
+    constructor(name: string, url: string) {
+        this.name = name;
+        this.url = url;
+    }
+}
+
 export class TabStash {
-    tabs: string[];
+    tabs: Tab[];
     name: string;
 
-    constructor(name: string, tabs: string[]) {
+    constructor(name: string, tabs: Tab[]) {
         this.tabs = tabs;
         this.name = name;
     }
@@ -13,6 +23,7 @@ export class TabStash {
 export class StashStorage {
     version: string;
     stashes: TabStash[];
+    activeStash: TabStash;
 
     constructor() {
         this.version = "0.0.1";
