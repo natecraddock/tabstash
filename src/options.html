@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <style>
+            .preferences-row {
+                display: flex;
+                justify-content: space-between;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="preferences-row browser-style">
+            <label for="stash-name">Default name for new stash</label>
+            <select id="stash-name" class="browser-style">
+                <option>Date</option>
+                <option>Tab Name</option>
+                <option>Custom Name</option>
+            </select>
+        </div>
+
+        <div class="preferences-row browser-style">
+            <label for="hard-limit">Hard limit for the number of stashes.</label>
+            <input id="hard-limit" type="checkbox" checked>
+        </div>
+
+        <script src="options.js"></script>
+    </body>
+</html>
