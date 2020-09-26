@@ -23,11 +23,12 @@ export class TabStash {
 export class StashStorage {
     version: string;
     stashes: TabStash[];
-    activeStash: TabStash;
+    activeStash: number = 0;
 
     constructor() {
         this.version = "0.0.1";
         this.stashes = [];
+        this.activeStash = -1;
     }
 }
 
@@ -35,17 +36,17 @@ export class StashStorage {
  * Each time the popup is opened the initialize() function will
  * Set this to the existing extension storage.
  */
-let storage: StashStorage = undefined;
+let tabstash: StashStorage;
 
 export function initialize(callback: () => void) {
     browser.storage.local.get("stashes").then(data => {
         if ("stashes" in data) {
-            storage = data.stashes;
+            tabstash = data.stashes;
             callback();
         }
         else {
-            storage = new StashStorage();
-            browser.storage.local.set({ stashes: storage }).then(() => {
+            tabstash = new StashStorage();
+            browser.storage.local.set({ stashes: tabstash }).then(() => {
                 callback();
             });
         }
@@ -53,19 +54,19 @@ export function initialize(callback: () => void) {
 }
 
 function writeStorage(): void {
-    browser.storage.local.set({ stashes: storage });
+    browser.storage.local.set({ stashes: tabstash });
 }
 
 export function clearStash(): void {
-    delete storage.stashes[0];
+    delete tabstash.stashes[0];
     writeStorage();
 }
 
 export function getStorage(): StashStorage {
-    return storage;
+    return tabstash;
 }
 
 export function storeTabs(tabs: TabStash): void {
-    storage.stashes[0] = tabs;
+    tabstash.stashes[0] = tabs;
     writeStorage();
 }

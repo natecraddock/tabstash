@@ -3,38 +3,43 @@ import * as storage from "./storage";
 
 type Popup = {
     buttons: {
-        stash: HTMLElement,
-        unstash: HTMLElement,
-        add: HTMLElement,
-        delete: HTMLElement,
-        more: HTMLElement,
+        stash: HTMLButtonElement,
+        unstash: HTMLButtonElement,
+        add: HTMLButtonElement,
+        delete: HTMLButtonElement,
+        more: HTMLButtonElement,
     },
-    stashList: HTMLElement,
+    stashList: HTMLSelectElement,
+    tabList: HTMLDivElement
 };
-let popup: Popup = null;
+let popup: Popup;
 
 function buttonStash() {
     /* For now let's just remove tabs, perhaps later we can pick a new active
      * and hide/discard tabs. */
-     browser.tabs.query({currentWindow: true, highlighted: true}).then((tabs) => {
-         let urls = tabs.map(tab => {
-             return new storage.Tab(tab.title, tab.url);
-         });
+    browser.tabs.query({ currentWindow: true, highlighted: true }).then((tabs) => {
+        let urls: storage.Tab[] = tabs.reduce((results: storage.Tab[], tab) => {
+            if (tab.url) {
+                results.push(new storage.Tab(tab.title ?? "", tab.url));
+            }
+            return results;
+        }, []);
 
-         for (let tab of tabs) {
-            browser.tabs.remove(tab.id);
-         }
+        for (let tab of tabs) {
+            if (tab.id) {
+                browser.tabs.remove(tab.id);
+            }
+        }
 
-         let stash = new storage.TabStash("stash", urls);
-         storage.storeTabs(stash);
+        let stash = new storage.TabStash(new Date().toISOString(), urls);
+        storage.storeTabs(stash);
     });
 }
 
 function listTabs(tabs: storage.TabStash) {
-    let tabsList = document.getElementById('tabs-list');
     let currentTabs = document.createDocumentFragment();
 
-    tabsList.textContent = "";
+    popup.tabList.textContent = "";
 
     for (let tab of tabs.tabs) {
         let tabLi = document.createElement("li");
@@ -51,11 +56,16 @@ function listTabs(tabs: storage.TabStash) {
 
     let ul = document.createElement('ul');
     ul.appendChild(currentTabs);
-    tabsList.appendChild(ul);
+    popup.tabList.appendChild(ul);
 }
 
-function refreshPopup(storage: storage.StashStorage) {
-    listTabs(storage.stashes[0]);
+function listStashes(stashes: storage.TabStash[]) {
+    for (let stash of stashes) {
+        let option = document.createElement("option") as HTMLOptionElement;
+        option.text = stash.name;
+
+        popup.stashList.add(option);
+    }
 }
 
 function buttonUnstash() {
@@ -84,6 +94,11 @@ function buttonMore() {
     console.log("Clicked More");
 }
 
+function refreshPopup(tabstash: storage.StashStorage) {
+    listTabs(tabstash.stashes[0]);
+    listStashes(tabstash.stashes);
+}
+
 function setupButtonListeners(popup: Popup) {
     popup.buttons.stash.addEventListener("click", buttonStash);
     popup.buttons.unstash.addEventListener("click", buttonUnstash);
@@ -93,29 +108,31 @@ function setupButtonListeners(popup: Popup) {
 }
 
 function setupStorageListener(changes: any, areaName: string) {
-    console.log(changes.stashes.newValue);
     refreshPopup(changes.stashes.newValue);
 }
 
 function setup() {
     popup = {
         buttons: {
-            stash: document.getElementById("but-stash"),
-            unstash: document.getElementById("but-unstash"),
-            add: document.getElementById("but-stash-add"),
-            delete: document.getElementById("but-stash-delete"),
-            more: document.getElementById("but-stash-more")
+            stash: document.getElementById("but-stash") as HTMLButtonElement,
+            unstash: document.getElementById("but-unstash") as HTMLButtonElement,
+            add: document.getElementById("but-stash-add") as HTMLButtonElement,
+            delete: document.getElementById("but-stash-delete") as HTMLButtonElement,
+            more: document.getElementById("but-stash-more") as HTMLButtonElement
         },
-        stashList: document.getElementById("stash-list")
+        stashList: document.getElementById("stash-list") as HTMLSelectElement,
+        tabList: document.getElementById('tabs-list') as HTMLDivElement
     };
 
     setupButtonListeners(popup);
     browser.storage.onChanged.addListener(setupStorageListener);
 
     let tabstash = storage.getStorage()
+
+    // Do the first paint of existing data.
     refreshPopup(tabstash);
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     storage.initialize(setup);
 });
