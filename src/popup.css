@@ -64,3 +64,7 @@ select {
 #stash li:hover {
     background-color: rgb(219, 219, 219);
 }
+
+#stash img {
+    width: 16px;
+}

@@ -20,7 +20,7 @@ function buttonStash() {
     browser.tabs.query({ currentWindow: true, highlighted: true }).then((tabs) => {
         let urls: storage.Tab[] = tabs.reduce((results: storage.Tab[], tab) => {
             if (tab.url) {
-                results.push(new storage.Tab(tab.title ?? "", tab.url));
+                results.push(new storage.Tab(tab.title ?? "", tab.url, tab.favIconUrl ?? ""));
             }
             return results;
         }, []);
@@ -45,6 +45,9 @@ function listTabs(tabs: storage.TabStash) {
         let tabLi = document.createElement("li");
         let tabLink = document.createElement("a");
         let fav = document.createElement("img");
+
+        fav.setAttribute("src", tab.icon);
+
         tabLi.appendChild(fav);
         tabLi.appendChild(tabLink);
         tabLink.textContent = tab.name;
