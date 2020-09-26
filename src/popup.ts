@@ -59,12 +59,21 @@ function listTabs(tabs: storage.TabStash) {
     popup.tabList.appendChild(ul);
 }
 
-function listStashes(stashes: storage.TabStash[]) {
+function listStashes(stashes: storage.TabStash[], active: number) {
+    // Remove old stashes if needed
+    for (let i = popup.stashList.options.length; i >= 0; --i) {
+        popup.stashList.remove(i);
+    }
+
     for (let stash of stashes) {
         let option = document.createElement("option") as HTMLOptionElement;
         option.text = stash.name;
 
         popup.stashList.add(option);
+    }
+
+    if (active !== -1) {
+        popup.stashList.selectedIndex = active;
     }
 }
 
@@ -94,17 +103,26 @@ function buttonMore() {
     console.log("Clicked More");
 }
 
-function refreshPopup(tabstash: storage.StashStorage) {
-    listTabs(tabstash.stashes[0]);
-    listStashes(tabstash.stashes);
+function stashListChanged() {
+    storage.setActiveTab(popup.stashList.selectedIndex);
+    refreshPopup(storage.getStorage());
 }
 
-function setupButtonListeners(popup: Popup) {
+function refreshPopup(tabstash: storage.StashStorage) {
+    listStashes(tabstash.stashes, tabstash.activeStash);
+    if (tabstash.activeStash !== -1) {
+        listTabs(tabstash.stashes[tabstash.activeStash]);
+    }
+}
+
+function setupListeners(popup: Popup) {
     popup.buttons.stash.addEventListener("click", buttonStash);
     popup.buttons.unstash.addEventListener("click", buttonUnstash);
     popup.buttons.add.addEventListener("click", buttonAddToStash);
     popup.buttons.delete.addEventListener("click", buttonDeleteStash);
     popup.buttons.more.addEventListener("click", buttonMore);
+
+    popup.stashList.addEventListener("change", stashListChanged)
 }
 
 function setupStorageListener(changes: any, areaName: string) {
@@ -124,7 +142,7 @@ function setup() {
         tabList: document.getElementById('tabs-list') as HTMLDivElement
     };
 
-    setupButtonListeners(popup);
+    setupListeners(popup);
     browser.storage.onChanged.addListener(setupStorageListener);
 
     let tabstash = storage.getStorage()

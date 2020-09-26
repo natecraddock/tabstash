@@ -58,7 +58,16 @@ function writeStorage(): void {
 }
 
 export function clearStash(): void {
-    delete tabstash.stashes[0];
+    tabstash.stashes.splice(tabstash.activeStash, 1);
+    tabstash.activeStash = tabstash.stashes.length - 1;
+    writeStorage();
+}
+
+export function setActiveTab(index: number) {
+    if (index < 0 || index > tabstash.stashes.length - 1) {
+        index = 0;
+    }
+    tabstash.activeStash = index;
     writeStorage();
 }
 
@@ -67,6 +76,7 @@ export function getStorage(): StashStorage {
 }
 
 export function storeTabs(tabs: TabStash): void {
-    tabstash.stashes[0] = tabs;
+    tabstash.stashes.push(tabs);
+    tabstash.activeStash = tabstash.stashes.length - 1;
     writeStorage();
 }
