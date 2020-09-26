@@ -68,3 +68,27 @@ select {
 #stash img {
     width: 16px;
 }
+
+#footer {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#footer img {
+    width: 24px;
+}
+
+#footer img:hover {
+    scale: 1.08;
+    transition: 0.2s;
+}
+
+#alert {
+    padding: 0.5rem;
+    color: white;
+    background-color: rgb(112, 151, 61);
+    border-radius: 5px;
+}
