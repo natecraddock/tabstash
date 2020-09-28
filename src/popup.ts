@@ -11,9 +11,30 @@ type Popup = {
         settings: HTMLImageElement,
     },
     stashList: HTMLSelectElement,
-    tabList: HTMLDivElement
+    tabList: HTMLDivElement,
+    alertBox: HTMLSpanElement,
 };
 let popup: Popup;
+
+function clearAlert() {
+    popup.alertBox.classList.remove("show");
+
+    // Reset the text later to prevent the box from resizing as it fades.
+    setTimeout(function() {
+        popup.alertBox.textContent = "";
+    }, 1000);
+}
+
+function alert(text: string, alertType: "sticky" | "timed" = "timed") {
+    const TIMEOUT = 3000;
+    popup.alertBox.textContent = text;
+
+    popup.alertBox.classList.add("show");
+
+    if (alertType === "timed") {
+        setTimeout(clearAlert, TIMEOUT);
+    }
+}
 
 function buttonStash() {
     /* For now let's just remove tabs, perhaps later we can pick a new active
@@ -34,6 +55,8 @@ function buttonStash() {
 
         let stash = new storage.TabStash(new Date().toISOString(), urls);
         storage.storeTabs(stash);
+
+        alert(`Stashed ${tabs.length} tabs!`);
     });
 }
 
@@ -147,8 +170,11 @@ function setup() {
             settings: document.getElementById("but-settings") as HTMLImageElement
         },
         stashList: document.getElementById("stash-list") as HTMLSelectElement,
-        tabList: document.getElementById('tabs-list') as HTMLDivElement
+        tabList: document.getElementById('tabs-list') as HTMLDivElement,
+        alertBox: document.getElementById('alert') as HTMLSpanElement,
     };
+
+    clearAlert();
 
     setupListeners(popup);
     browser.storage.onChanged.addListener(setupStorageListener);

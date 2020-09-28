@@ -91,4 +91,10 @@ select {
     color: white;
     background-color: rgb(112, 151, 61);
     border-radius: 5px;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+#alert.show {
+    opacity: 1;
 }
