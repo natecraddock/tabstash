@@ -84,6 +84,7 @@ select {
 #footer img:hover {
     scale: 1.08;
     transition: 0.2s;
+    cursor: pointer;
 }
 
 #alert {
