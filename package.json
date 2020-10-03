@@ -1,39 +1,44 @@
 {
-  "name": "tabstash",
-  "version": "0.0.1",
-  "description": "Like `git stash` but for tabs",
-  "private": true,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/natecraddock/tabstash.git"
-  },
-  "keywords": [
-    "Firefox",
-    "Extension",
-    "Tabs",
-    "Stash",
-    "Tab stash"
-  ],
-  "author": "Nathan Craddock",
-  "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/natecraddock/tabstash/issues"
-  },
-  "homepage": "https://github.com/natecraddock/tabstash#readme",
-  "devDependencies": {
-    "@types/firefox-webext-browser": "^78.0.1",
-    "clean-webpack-plugin": "^3.0.0",
-    "copy-webpack-plugin": "^6.1.1",
-    "ts-loader": "^8.0.4",
-    "typescript": "^4.0.3",
-    "web-ext": "^5.0.0",
-    "webextension-polyfill-ts": "^0.20.0",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
-  },
-  "scripts": {
-    "build": "webpack",
-    "run": "web-ext run -s build",
-    "clean": "rm -r build"
-  }
+    "name": "tabstash",
+    "version": "0.0.1",
+    "description": "Like `git stash` but for tabs",
+    "private": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/natecraddock/tabstash.git"
+    },
+    "keywords": [
+        "Firefox",
+        "Extension",
+        "Tabs",
+        "Stash",
+        "Tab stash"
+    ],
+    "author": "Nathan Craddock",
+    "license": "GPL-3.0-or-later",
+    "bugs": {
+        "url": "https://github.com/natecraddock/tabstash/issues"
+    },
+    "homepage": "https://github.com/natecraddock/tabstash#readme",
+    "devDependencies": {
+        "@types/firefox-webext-browser": "^78.0.1",
+        "clean-webpack-plugin": "^3.0.0",
+        "copy-webpack-plugin": "^6.1.1",
+        "prettier": "^2.1.2",
+        "ts-loader": "^8.0.4",
+        "typescript": "^4.0.3",
+        "web-ext": "^5.0.0",
+        "webextension-polyfill-ts": "^0.20.0",
+        "webpack": "^4.44.2",
+        "webpack-cli": "^3.3.12"
+    },
+    "scripts": {
+        "build": "webpack",
+        "run": "web-ext run -s build",
+        "clean": "rm -r build"
+    },
+    "prettier": {
+        "printWidth": 90,
+        "tabWidth": 4
+    }
 }

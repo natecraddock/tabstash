@@ -12,6 +12,10 @@ export class Tab {
     }
 }
 
+export class Preferences {
+    stashName: "date" | "tabTitle";
+}
+
 export class TabStash {
     tabs: Tab[];
     name: string;
@@ -26,11 +30,13 @@ export class StashStorage {
     version: string;
     stashes: TabStash[];
     activeStash: number = 0;
+    preferences: Preferences;
 
     constructor() {
         this.version = "0.0.1";
         this.stashes = [];
         this.activeStash = -1;
+        this.preferences = new Preferences();
     }
 }
 
@@ -41,12 +47,11 @@ export class StashStorage {
 let tabstash: StashStorage;
 
 export function initialize(callback: () => void) {
-    browser.storage.local.get("stashes").then(data => {
+    browser.storage.local.get("stashes").then((data) => {
         if ("stashes" in data) {
             tabstash = data.stashes;
             callback();
-        }
-        else {
+        } else {
             tabstash = new StashStorage();
             browser.storage.local.set({ stashes: tabstash }).then(() => {
                 callback();
@@ -80,5 +85,10 @@ export function getStorage(): StashStorage {
 export function storeTabs(tabs: TabStash): void {
     tabstash.stashes.push(tabs);
     tabstash.activeStash = tabstash.stashes.length - 1;
+    writeStorage();
+}
+
+export function setPreference(name: string, value: any) {
+    tabstash.preferences.stashName = value;
     writeStorage();
 }

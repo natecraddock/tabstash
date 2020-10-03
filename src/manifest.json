@@ -10,13 +10,7 @@
         "96": "icons/tabstash-96.png"
     },
 
-    "permissions": [
-        "<all_urls>",
-        "tabs",
-        "menus",
-        "storage",
-        "tabHide"
-    ],
+    "permissions": ["<all_urls>", "tabs", "menus", "storage", "tabHide"],
 
     "browser_action": {
         "browser_style": true,

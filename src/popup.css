@@ -10,7 +10,8 @@ body {
     justify-content: space-between;
 }
 
-#header h2, button {
+#header h2,
+button {
     margin: 0;
     vertical-align: middle;
 }
@@ -67,6 +68,12 @@ select {
 
 #stash img {
     width: 16px;
+    margin-right: 4px;
+}
+
+#stash a {
+    text-decoration: none;
+    color: black;
 }
 
 #footer {

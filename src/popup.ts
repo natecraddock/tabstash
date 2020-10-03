@@ -3,16 +3,16 @@ import * as storage from "./storage";
 
 type Popup = {
     buttons: {
-        stash: HTMLButtonElement,
-        unstash: HTMLButtonElement,
-        add: HTMLButtonElement,
-        delete: HTMLButtonElement,
-        more: HTMLButtonElement,
-        settings: HTMLImageElement,
-    },
-    stashList: HTMLSelectElement,
-    tabList: HTMLDivElement,
-    alertBox: HTMLSpanElement,
+        stash: HTMLButtonElement;
+        unstash: HTMLButtonElement;
+        add: HTMLButtonElement;
+        delete: HTMLButtonElement;
+        more: HTMLButtonElement;
+        settings: HTMLImageElement;
+    };
+    stashList: HTMLSelectElement;
+    tabList: HTMLDivElement;
+    alertBox: HTMLSpanElement;
 };
 let popup: Popup;
 
@@ -20,7 +20,7 @@ function clearAlert() {
     popup.alertBox.classList.remove("show");
 
     // Reset the text later to prevent the box from resizing as it fades.
-    setTimeout(function() {
+    setTimeout(function () {
         popup.alertBox.textContent = "";
     }, 1000);
 }
@@ -42,7 +42,9 @@ function buttonStash() {
     browser.tabs.query({ currentWindow: true, highlighted: true }).then((tabs) => {
         let urls: storage.Tab[] = tabs.reduce((results: storage.Tab[], tab) => {
             if (tab.url) {
-                results.push(new storage.Tab(tab.title ?? "", tab.url, tab.favIconUrl ?? ""));
+                results.push(
+                    new storage.Tab(tab.title ?? "", tab.url, tab.favIconUrl ?? "")
+                );
             }
             return results;
         }, []);
@@ -53,7 +55,17 @@ function buttonStash() {
             }
         }
 
-        let stash = new storage.TabStash(new Date().toISOString(), urls);
+        const options = {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+        };
+        let stash = new storage.TabStash(
+            new Date().toLocaleDateString("en-US", options),
+            urls
+        );
         storage.storeTabs(stash);
 
         alert(`Stashed ${tabs.length} tabs!`);
@@ -76,12 +88,12 @@ function listTabs(tabs: storage.TabStash) {
         tabLi.appendChild(tabLink);
         tabLink.textContent = tab.name;
 
-        tabLink.setAttribute('href', tab.url);
-        tabLink.classList.add('switch-tabs');
+        tabLink.setAttribute("href", tab.url);
+        tabLink.classList.add("switch-tabs");
         currentTabs.appendChild(tabLi);
     }
 
-    let ul = document.createElement('ul');
+    let ul = document.createElement("ul");
     ul.appendChild(currentTabs);
     popup.tabList.appendChild(ul);
 }
@@ -111,7 +123,7 @@ function buttonUnstash() {
     for (let tab of tabstash.stashes[0].tabs) {
         browser.tabs.create({
             discarded: true,
-            url: tab.url
+            url: tab.url,
         });
     }
 
@@ -148,11 +160,11 @@ function setupListeners(popup: Popup) {
     popup.buttons.add.addEventListener("click", buttonAddToStash);
     popup.buttons.delete.addEventListener("click", buttonDeleteStash);
     popup.buttons.more.addEventListener("click", buttonMore);
-    popup.buttons.settings.addEventListener("click", function() {
+    popup.buttons.settings.addEventListener("click", function () {
         browser.runtime.openOptionsPage();
-    })
+    });
 
-    popup.stashList.addEventListener("change", stashListChanged)
+    popup.stashList.addEventListener("change", stashListChanged);
 }
 
 function setupStorageListener(changes: any, areaName: string) {
@@ -167,11 +179,11 @@ function setup() {
             add: document.getElementById("but-stash-add") as HTMLButtonElement,
             delete: document.getElementById("but-stash-delete") as HTMLButtonElement,
             more: document.getElementById("but-stash-more") as HTMLButtonElement,
-            settings: document.getElementById("but-settings") as HTMLImageElement
+            settings: document.getElementById("but-settings") as HTMLImageElement,
         },
         stashList: document.getElementById("stash-list") as HTMLSelectElement,
-        tabList: document.getElementById('tabs-list') as HTMLDivElement,
-        alertBox: document.getElementById('alert') as HTMLSpanElement,
+        tabList: document.getElementById("tabs-list") as HTMLDivElement,
+        alertBox: document.getElementById("alert") as HTMLSpanElement,
     };
 
     clearAlert();
@@ -179,7 +191,7 @@ function setup() {
     setupListeners(popup);
     browser.storage.onChanged.addListener(setupStorageListener);
 
-    let tabstash = storage.getStorage()
+    let tabstash = storage.getStorage();
 
     // Do the first paint of existing data.
     refreshPopup(tabstash);
