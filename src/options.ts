@@ -1,4 +1,4 @@
-import * as storage from "./storage";
+import { storage } from "./storage";
 
 function setup() {
     let select = document.getElementById("stash-name") as HTMLSelectElement;

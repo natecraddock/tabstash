@@ -1,5 +1,5 @@
 import { browser } from "webextension-polyfill-ts";
-import * as storage from "./storage";
+import { storage } from "./storage";
 
 type Popup = {
     buttons: {
