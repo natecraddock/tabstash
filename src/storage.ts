@@ -47,14 +47,14 @@ export namespace storage {
      */
     let tabstash: StashStorage;
 
-    function doVersioning() {}
+    function doVersioning(tabstash: StashStorage) {}
 
     export function initialize(callback: () => void) {
         browser.storage.local.get("stashes").then((data) => {
             if ("stashes" in data) {
                 tabstash = data.stashes;
 
-                doVersioning();
+                doVersioning(tabstash);
 
                 callback();
             } else {
