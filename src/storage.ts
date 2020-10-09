@@ -14,7 +14,7 @@ export namespace storage {
     }
 
     export class Preferences {
-        stashName: "date" | "tabTitle";
+        stashName: "date" | "tab_name" | "custom";
     }
 
     export class TabStash {

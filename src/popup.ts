@@ -55,17 +55,25 @@ function buttonStash() {
             }
         }
 
-        const options = {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-        };
-        let stash = new storage.TabStash(
-            new Date().toLocaleDateString("en-US", options),
-            urls
-        );
+        let name = "";
+        const preferences = storage.getStorage().preferences;
+
+        if (preferences.stashName === "date") {
+            const options = {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+            };
+            name = new Date().toLocaleDateString("en-US", options);
+        } else if (preferences.stashName === "tab_name") {
+            name = urls[0].name;
+        } else if (preferences.stashName === "custom") {
+            name = "blah";
+        }
+
+        let stash = new storage.TabStash(name, urls);
         storage.storeTabs(stash);
 
         alert(`Stashed ${tabs.length} tabs!`);
