@@ -64,6 +64,16 @@ export namespace storage {
                 });
             }
         });
+
+        /**
+         * There are some cases where two instances of the storage are loaded into memory,
+         * and they would get out of sync. For example, having the preferences open in
+         * one window, and then opening the popup in another window. The preferences local
+         * copy of the storage would overwrite the popup on preference changes.
+         */
+        browser.storage.onChanged.addListener((changes: any, areaName: string) => {
+            tabstash = changes.stashes.newValue;
+        });
     }
 
     export function writeStorage(): void {
