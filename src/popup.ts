@@ -6,7 +6,6 @@ type Popup = {
         unstash: HTMLButtonElement;
         add: HTMLButtonElement;
         delete: HTMLButtonElement;
-        more: HTMLButtonElement;
         settings: HTMLImageElement;
     };
     stashList: HTMLSelectElement;
@@ -185,7 +184,6 @@ function setupListeners(popup: Popup) {
     popup.buttons.unstash.addEventListener("click", buttonUnstash);
     popup.buttons.add.addEventListener("click", buttonAddToStash);
     popup.buttons.delete.addEventListener("click", buttonDeleteStash);
-    popup.buttons.more.addEventListener("click", buttonMore);
     popup.buttons.settings.addEventListener("click", function () {
         browser.runtime.openOptionsPage();
     });
@@ -204,7 +202,6 @@ function setup() {
             unstash: document.getElementById("but-unstash") as HTMLButtonElement,
             add: document.getElementById("but-stash-add") as HTMLButtonElement,
             delete: document.getElementById("but-stash-delete") as HTMLButtonElement,
-            more: document.getElementById("but-stash-more") as HTMLButtonElement,
             settings: document.getElementById("but-settings") as HTMLImageElement,
         },
         stashList: document.getElementById("stash-list") as HTMLSelectElement,
