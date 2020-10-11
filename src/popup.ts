@@ -4,11 +4,13 @@ type Popup = {
     buttons: {
         stash: HTMLButtonElement;
         unstash: HTMLButtonElement;
+        edit: HTMLButtonElement;
         add: HTMLButtonElement;
         delete: HTMLButtonElement;
         settings: HTMLImageElement;
     };
     stashList: HTMLSelectElement;
+    stashName: HTMLInputElement;
     tabList: HTMLDivElement;
     alertBox: HTMLSpanElement;
     stashArea: HTMLDivElement;
@@ -132,7 +134,6 @@ function listStashes(stashes: storage.TabStash[], active: number) {
 }
 
 function buttonUnstash() {
-    console.log("Clicked Unstash");
     let tabstash = storage.getStorage();
 
     for (let tab of tabstash.stashes[0].tabs) {
@@ -143,6 +144,17 @@ function buttonUnstash() {
     }
 
     storage.clearStash();
+}
+
+function buttonEditStashname() {
+    // TODO: Store state in storage
+    if (popup.stashList.classList.contains("hidden")) {
+        popup.stashList.classList.remove("hidden");
+        popup.stashName.classList.add("hidden");
+    } else {
+        popup.stashList.classList.add("hidden");
+        popup.stashName.classList.remove("hidden");
+    }
 }
 
 function buttonAddToStash() {
@@ -182,6 +194,7 @@ function refreshPopup(tabstash: storage.StashStorage) {
 function setupListeners(popup: Popup) {
     popup.buttons.stash.addEventListener("click", buttonStash);
     popup.buttons.unstash.addEventListener("click", buttonUnstash);
+    popup.buttons.edit.addEventListener("click", buttonEditStashname);
     popup.buttons.add.addEventListener("click", buttonAddToStash);
     popup.buttons.delete.addEventListener("click", buttonDeleteStash);
     popup.buttons.settings.addEventListener("click", function () {
@@ -200,11 +213,13 @@ function setup() {
         buttons: {
             stash: document.getElementById("but-stash") as HTMLButtonElement,
             unstash: document.getElementById("but-unstash") as HTMLButtonElement,
+            edit: document.getElementById("but-stash-name-edit") as HTMLButtonElement,
             add: document.getElementById("but-stash-add") as HTMLButtonElement,
             delete: document.getElementById("but-stash-delete") as HTMLButtonElement,
             settings: document.getElementById("but-settings") as HTMLImageElement,
         },
         stashList: document.getElementById("stash-list") as HTMLSelectElement,
+        stashName: document.getElementById("stash-name") as HTMLInputElement,
         tabList: document.getElementById("tabs-list") as HTMLDivElement,
         alertBox: document.getElementById("alert") as HTMLSpanElement,
         stashArea: document.getElementById("popup-needs-data") as HTMLDivElement,

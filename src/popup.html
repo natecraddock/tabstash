@@ -18,7 +18,17 @@
 
         <div id="popup-needs-data">
             <div id="stash-box">
-                <select class="browser-style" name="stashes" id="stash-list"></select>
+                <div id="stash-select-row">
+                    <div>
+                        <select
+                            class="browser-style"
+                            name="stashes"
+                            id="stash-list"
+                        ></select>
+                        <input type="text" id="stash-name" class="browser-style hidden" />
+                    </div>
+                    <button id="but-stash-name-edit" class="browser-style">E</button>
+                </div>
                 <div id="stash">
                     <div id="tabs-list"></div>
                 </div>
