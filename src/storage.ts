@@ -1,5 +1,3 @@
-import { browser } from "webextension-polyfill-ts";
-
 export namespace storage {
     export class Tab {
         name: string;

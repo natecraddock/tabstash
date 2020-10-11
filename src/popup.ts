@@ -1,4 +1,3 @@
-import { browser } from "webextension-polyfill-ts";
 import { storage } from "./storage";
 
 type Popup = {
