@@ -15,6 +15,10 @@ export namespace storage {
 
     export class Preferences {
         stashName: "date" | "tab_name" | "custom";
+
+        constructor() {
+            this.stashName = "date";
+        }
     }
 
     export class TabStash {

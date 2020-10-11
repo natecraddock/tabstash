@@ -13,19 +13,28 @@ type Popup = {
     stashList: HTMLSelectElement;
     tabList: HTMLDivElement;
     alertBox: HTMLSpanElement;
+    stashArea: HTMLDivElement;
 };
 let popup: Popup;
+
+let alertClearId: NodeJS.Timeout | undefined = undefined;
 
 function clearAlert() {
     popup.alertBox.classList.remove("show");
 
     // Reset the text later to prevent the box from resizing as it fades.
-    setTimeout(function () {
+    alertClearId = setTimeout(function () {
         popup.alertBox.textContent = "";
     }, 1000);
 }
 
 function alert(text: string, alertType: "sticky" | "timed" = "timed") {
+    // Remove timeouts to clear existing alerts. */
+    if (alertClearId !== undefined) {
+        clearTimeout(alertClearId);
+        alertClearId = undefined;
+    }
+
     const TIMEOUT = 3000;
     popup.alertBox.textContent = text;
 
@@ -76,7 +85,7 @@ function buttonStash() {
         let stash = new storage.TabStash(name, urls);
         storage.storeTabs(stash);
 
-        alert(`Stashed ${tabs.length} tabs!`);
+        alert(`Stashed ${tabs.length} tab(s)`);
     });
 }
 
@@ -156,7 +165,17 @@ function stashListChanged() {
 }
 
 function refreshPopup(tabstash: storage.StashStorage) {
+    if (tabstash.stashes.length > 0) {
+        popup.stashArea.classList.add("show");
+        popup.buttons.unstash.disabled = false;
+    } else {
+        popup.stashArea.classList.remove("show");
+        alert('No stashes: click "Stash" to store selected tabs', "sticky");
+        popup.buttons.unstash.disabled = true;
+    }
+
     listStashes(tabstash.stashes, tabstash.activeStash);
+
     if (tabstash.activeStash !== -1) {
         listTabs(tabstash.stashes[tabstash.activeStash]);
     }
@@ -192,6 +211,7 @@ function setup() {
         stashList: document.getElementById("stash-list") as HTMLSelectElement,
         tabList: document.getElementById("tabs-list") as HTMLDivElement,
         alertBox: document.getElementById("alert") as HTMLSpanElement,
+        stashArea: document.getElementById("popup-needs-data") as HTMLDivElement,
     };
 
     clearAlert();
