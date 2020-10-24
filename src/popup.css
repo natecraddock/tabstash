@@ -39,7 +39,6 @@ button {
     flex-direction: row;
     align-items: stretch;
     width: 100%;
-    /* justify-content: space-between; */
 }
 
 #stash-select-row div {
@@ -141,6 +140,38 @@ select {
     display: block;
 }
 
+#name-edit-overlay {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    transition: visibility 0.2s;
+    visibility: visible;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#name-edit-box {
+    padding: 1ch;
+    background-color: white;
+    width: 95%;
+}
+
+#name-edit-box input {
+    margin-bottom: 1ch;
+}
+
+#name-edit-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 .hidden {
-    display: none;
+    display: none !important;
+    visibility: hidden !important;
 }

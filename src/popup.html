@@ -6,6 +6,17 @@
     </head>
 
     <body>
+        <div id="name-edit-overlay" class="hidden">
+            <div id="name-edit-box">
+                <h2>Edit Stash Name</h2>
+                <input type="text" id="stash-name" />
+                <div id="name-edit-buttons">
+                    <button class="browser-style" id="edit-name-cancel">Cancel</button>
+                    <button class="browser-style" id="edit-name-confirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+
         <div id="header" class="button-row">
             <h2>TabStash</h2>
             <div>
@@ -19,14 +30,7 @@
         <div id="popup-needs-data">
             <div id="stash-box">
                 <div id="stash-select-row">
-                    <div>
-                        <select
-                            class="browser-style"
-                            name="stashes"
-                            id="stash-list"
-                        ></select>
-                        <input type="text" id="stash-name" class="browser-style hidden" />
-                    </div>
+                    <select name="stashes" id="stash-list" class="browser-style"></select>
                     <button id="but-stash-name-edit" class="browser-style">E</button>
                 </div>
                 <div id="stash">

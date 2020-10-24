@@ -1,3 +1,4 @@
+import { doc } from "prettier";
 import { storage } from "./storage";
 
 type Popup = {
@@ -8,12 +9,15 @@ type Popup = {
         add: HTMLButtonElement;
         delete: HTMLButtonElement;
         settings: HTMLImageElement;
+        editCancel: HTMLButtonElement;
+        editConfirm: HTMLButtonElement;
     };
     stashList: HTMLSelectElement;
     stashName: HTMLInputElement;
     tabList: HTMLDivElement;
     alertBox: HTMLSpanElement;
     stashArea: HTMLDivElement;
+    editNameBox: HTMLDivElement;
 };
 let popup: Popup;
 
@@ -147,14 +151,9 @@ function buttonUnstash() {
 }
 
 function buttonEditStashname() {
-    // TODO: Store state in storage
-    if (popup.stashList.classList.contains("hidden")) {
-        popup.stashList.classList.remove("hidden");
-        popup.stashName.classList.add("hidden");
-    } else {
-        popup.stashList.classList.add("hidden");
-        popup.stashName.classList.remove("hidden");
-    }
+    popup.editNameBox.classList.remove("hidden");
+    popup.stashName.focus();
+    popup.stashName.value = popup.stashList.value;
 }
 
 function buttonAddToStash() {
@@ -200,6 +199,16 @@ function setupListeners(popup: Popup) {
     popup.buttons.settings.addEventListener("click", function () {
         browser.runtime.openOptionsPage();
     });
+    popup.buttons.editCancel.addEventListener("click", function () {
+        popup.editNameBox.classList.add("hidden");
+    });
+    popup.buttons.editConfirm.addEventListener("click", function () {
+        let tabstash = storage.getStorage();
+        tabstash.stashes[tabstash.activeStash].name = popup.stashName.value;
+        storage.writeStorage();
+        popup.editNameBox.classList.add("hidden");
+        refreshPopup(tabstash);
+    });
 
     popup.stashList.addEventListener("change", stashListChanged);
 }
@@ -217,12 +226,17 @@ function setup() {
             add: document.getElementById("but-stash-add") as HTMLButtonElement,
             delete: document.getElementById("but-stash-delete") as HTMLButtonElement,
             settings: document.getElementById("but-settings") as HTMLImageElement,
+            editCancel: document.getElementById("edit-name-cancel") as HTMLButtonElement,
+            editConfirm: document.getElementById(
+                "edit-name-confirm"
+            ) as HTMLButtonElement,
         },
         stashList: document.getElementById("stash-list") as HTMLSelectElement,
         stashName: document.getElementById("stash-name") as HTMLInputElement,
         tabList: document.getElementById("tabs-list") as HTMLDivElement,
         alertBox: document.getElementById("alert") as HTMLSpanElement,
         stashArea: document.getElementById("popup-needs-data") as HTMLDivElement,
+        editNameBox: document.getElementById("name-edit-overlay") as HTMLDivElement,
     };
 
     clearAlert();
