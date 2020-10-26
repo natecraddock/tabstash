@@ -164,13 +164,17 @@ function buttonDeleteStash() {
     console.log("Clicked Delete");
 }
 
-function buttonMore() {
-    console.log("Clicked More");
-}
-
 function stashListChanged() {
     storage.setActiveTab(popup.stashList.selectedIndex);
     refreshPopup(storage.getStorage());
+}
+
+function setStashName() {
+    let tabstash = storage.getStorage();
+    tabstash.stashes[tabstash.activeStash].name = popup.stashName.value;
+    storage.writeStorage();
+    popup.editNameBox.classList.add("hidden");
+    refreshPopup(tabstash);
 }
 
 function refreshPopup(tabstash: storage.StashStorage) {
@@ -199,15 +203,23 @@ function setupListeners(popup: Popup) {
     popup.buttons.settings.addEventListener("click", function () {
         browser.runtime.openOptionsPage();
     });
+
     popup.buttons.editCancel.addEventListener("click", function () {
         popup.editNameBox.classList.add("hidden");
     });
-    popup.buttons.editConfirm.addEventListener("click", function () {
-        let tabstash = storage.getStorage();
-        tabstash.stashes[tabstash.activeStash].name = popup.stashName.value;
-        storage.writeStorage();
+    popup.buttons.editConfirm.addEventListener("click", setStashName);
+    popup.stashName.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            setStashName();
+        }
+    });
+
+    popup.editNameBox.addEventListener("click", function (event) {
+        if (event.target !== this) {
+            return;
+        }
+
         popup.editNameBox.classList.add("hidden");
-        refreshPopup(tabstash);
     });
 
     popup.stashList.addEventListener("change", stashListChanged);
