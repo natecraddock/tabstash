@@ -176,11 +176,11 @@ function stashListChanged() {
 function refreshPopup(tabstash: storage.StashStorage) {
     if (tabstash.stashes.length > 0) {
         popup.stashArea.classList.add("show");
-        popup.buttons.unstash.disabled = false;
+        popup.buttons.unstash.classList.remove("hidden");
     } else {
         popup.stashArea.classList.remove("show");
         alert('No stashes: click "Stash" to store selected tabs', "sticky");
-        popup.buttons.unstash.disabled = true;
+        popup.buttons.unstash.classList.add("hidden");
     }
 
     listStashes(tabstash.stashes, tabstash.activeStash);
