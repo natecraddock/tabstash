@@ -83,7 +83,11 @@ function buttonStash() {
         } else if (preferences.stashName === "tab_name") {
             name = urls[0].name;
         } else if (preferences.stashName === "custom") {
-            name = "blah";
+            name = urls[0].name;
+
+            setTimeout(function () {
+                buttonEditStashname();
+            }, 100);
         }
 
         let stash = new storage.TabStash(name, urls);
