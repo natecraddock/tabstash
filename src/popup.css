@@ -159,6 +159,7 @@ select {
     padding: 1ch;
     background-color: white;
     width: 95%;
+    border-radius: 1ch;
 }
 
 #name-edit-box input {
